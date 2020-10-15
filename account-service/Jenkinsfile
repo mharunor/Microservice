@@ -1,0 +1,39 @@
+node {
+
+    withMaven(maven:'maven') {
+
+        stage('Checkout') {
+            git url: 'https://github.com/mharunor/Microservice.git', credentialsId: 'github', branch: 'master'
+        }
+        stage('Build') {
+            mvn clean install
+
+            def pom = readMavenPom file:'pom.xml'
+            print pom.version
+            env.version = pom.version
+        }
+        
+
+    }
+
+	}
+/*pipeline {
+    agent any
+    
+	stages {
+        stage('Checkout') {
+           steps { 
+				git url: 'https://github.com/habsh/microservice1.git', credentialsId: 'habsh', branch: 'master'
+		   }
+        }
+
+        stage('Build') {
+			steps {
+				bat 'cd ./account-service'
+				bat 'mvn clean install'
+				
+				}
+			}       
+		}
+	}
+*/
